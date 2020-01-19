@@ -294,24 +294,32 @@ service-names = [
 
     [[oracle.scan]]
     name = 'oracle-tnscmd-ping'
-    command = 'tnscmd10g ping -h {address} -p {port} 2>&1 | tee "{scandir}/{protocol}_{port}_oracle_tnscmd_ping.txt"'
+    command = 'tnscmd10g ping --indent -h {address} -p {port} 2>&1 | tee "{scandir}/{protocol}_{port}_oracle_tnscmd_ping.txt"'
 
     [[oracle.scan]]
     name = 'oracle-tnscmd-version'
-    command = 'tnscmd10g version -h {address} -p {port} 2>&1 | tee "{scandir}/{protocol}_{port}_oracle_tnscmd_version.txt"'
+    command = 'tnscmd10g version --indent -h {address} -p {port} 2>&1 | tee "{scandir}/{protocol}_{port}_oracle_tnscmd_version.txt"'
 
     [[oracle.scan]]
     name = 'oracle-tnscmd-version'
-    command = 'tnscmd10g version -h {address} -p {port} 2>&1 | tee "{scandir}/{protocol}_{port}_oracle_tnscmd_version.txt"'
+    command = 'tnscmd10g version --indent -h {address} -p {port} 2>&1 | tee "{scandir}/{protocol}_{port}_oracle_tnscmd_version.txt"'
 
     [[oracle.scan]]
     name = 'oracle-scanner'
     command = 'oscanner -v -s {address} -P {port} 2>&1 | tee "{scandir}/{protocol}_{port}_oracle_scanner.txt"'
 
     [[oracle.manual]]
+    description = 'When working with Oracle 10g, you might have to add the --10G flag when using tnscmd10g'
+    command = 'tnscmd10g version --10G --indent -h {address} -p {port} 2>&1 | tee "{scandir}/{protocol}_{port}_oracle_tnscmd_version.txt"'
+
+    [[oracle.manual]]
     description = 'Brute-force SIDs using Nmap'
     command = 'nmap {nmap_extra} -sV -p {port} --script="banner,oracle-sid-brute" -oN "{scandir}/{protocol}_{port}_oracle_sid-brute_nmap.txt" -oX "{scandir}/xml/{protocol}_{port}_oracle_sid-brute_nmap.xml" {address}'
 
+    [[oracle.manual]]
+    description = 'Brute-force SIDs using sidugess'
+    command = 'sidguess -i {address} -p {port} -d /usr/share/metasploit-framework/data/wordlists/sid.txt -m findall -r "{scandir}/{protocol}_{port}_oracle_sid_brute_sidguess.txt"'
+ 
     [[oracle.manual]]
     description = 'Install ODAT (https://github.com/quentinhardy/odat) and run the following commands:'
     commands = [
